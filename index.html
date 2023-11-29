@@ -134,6 +134,9 @@
 
         <form id="classForm">
             <h3>Add Class</h3>
+            <label for="className">Class Name:</label>
+            <input type="text" id="className" name="className" required>
+
             <label for="time">Time:</label>
             <input type="text" id="time" name="time" required>
 
@@ -156,6 +159,7 @@
         </form>
 
         <button id="newClassBtn">New Class</button>
+        <button id="deleteClassBtn">Delete Class</button>
     </section>
 
     <script>
@@ -164,6 +168,7 @@
             const table = document.getElementById('classTable');
             const form = document.getElementById('classForm');
             const newClassBtn = document.getElementById('newClassBtn');
+            const deleteClassBtn = document.getElementById('deleteClassBtn');
 
             // Retrieve existing classes from local storage
             let classes = JSON.parse(localStorage.getItem('classes')) || {};
@@ -193,11 +198,12 @@
                 }
 
                 // Add new class to the selected class schedule
-                const selectedClass = classSelector.value;
-                if (!classes[selectedClass]) {
-                    classes[selectedClass] = [];
+                const className = formData.className;
+                if (!classes[className]) {
+                    classes[className] = [];
                 }
-                classes[selectedClass].push(formData);
+                delete formData.className; // Remove className from the class schedule
+                classes[className].push(formData);
                 localStorage.setItem('classes', JSON.stringify(classes));
 
                 // Display the updated class schedule
@@ -221,23 +227,41 @@
                 }
             });
 
+            // Handle delete class button click
+            deleteClassBtn.addEventListener('click', function () {
+                const selectedClass = classSelector.value;
+                if (selectedClass) {
+                    if (confirm(`Are you sure you want to delete ${selectedClass}?`)) {
+                        delete classes[selectedClass];
+                        localStorage.setItem('classes', JSON.stringify(classes));
+
+                        // Update the class selector and display the default class schedule
+                        updateClassSelector();
+                        classSelector.value = Object.keys(classes)[0];
+                        displayClassSchedule();
+                    }
+                } else {
+                    alert('Please select a class to delete.');
+                }
+            });
+
             // Function to populate class selector
             function updateClassSelector() {
                 classSelector.innerHTML = '';
 
-                Object.keys(classes).forEach((classId, index) => {
+                Object.keys(classes).forEach((className, index) => {
                     const option = document.createElement('option');
-                    option.value = classId;
-                    option.textContent = `Class ${index + 1}`;
+                    option.value = className;
+                    option.textContent = `Class ${index + 1}: ${className}`;
                     classSelector.appendChild(option);
                 });
             }
 
             // Function to display the selected class schedule
             function displayClassSchedule() {
-                const selectedClassId = classSelector.value;
-                const selectedClass = classes[selectedClassId] || [];
-                const selectedTable = generateClassTable(selectedClass);
+                const selectedClass = classSelector.value;
+                const selectedSchedule = classes[selectedClass] || [];
+                const selectedTable = generateClassTable(selectedSchedule);
 
                 // Clear existing table content
                 table.innerHTML = '';
