@@ -5,7 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Scheduling</title>
     <style>
-        /* Your CSS styles here */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #495057;
+        }
+
+        header {
+            background-color: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+        }
+
+        section {
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        form {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label, input {
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #343a40;
+            color: #fff;
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+
+        button {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 8px 12px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
@@ -17,7 +99,20 @@
     <section>
         <h2>Class Schedule</h2>
         <table id="classTable">
-            <!-- Table structure here -->
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Class schedule rows will be dynamically added here -->
+            </tbody>
         </table>
 
         <form id="classForm">
@@ -51,13 +146,8 @@
 
             // Display existing classes in the table
             const table = document.getElementById('classTable');
-            classes.forEach(classData => {
-                const row = document.createElement('tr');
-                Object.values(classData).forEach(value => {
-                    const cell = document.createElement('td');
-                    cell.textContent = value;
-                    row.appendChild(cell);
-                });
+            classes.forEach((classData, index) => {
+                const row = createTableRow(classData, index);
                 table.appendChild(row);
             });
 
@@ -76,12 +166,7 @@
                 }
 
                 // Add new class to the table
-                const newRow = document.createElement('tr');
-                Object.values(formData).forEach(value => {
-                    const cell = document.createElement('td');
-                    cell.textContent = value;
-                    newRow.appendChild(cell);
-                });
+                const newRow = createTableRow(formData, classes.length);
                 table.appendChild(newRow);
 
                 // Add new class to local storage
@@ -91,6 +176,34 @@
                 // Clear the form
                 form.reset();
             });
+
+            // Function to create a table row with delete button
+            function createTableRow(classData, index) {
+                const row = document.createElement('tr');
+
+                Object.values(classData).forEach(value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+
+                const deleteCell = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', function () {
+                    // Remove the row from the table
+                    table.deleteRow(index + 1); // Add 1 to account for the header row
+
+                    // Remove the class from the local storage
+                    classes.splice(index, 1);
+                    localStorage.setItem('classes', JSON.stringify(classes));
+                });
+
+                deleteCell.appendChild(deleteButton);
+                row.appendChild(deleteCell);
+
+                return row;
+            }
         });
     </script>
 </body>
