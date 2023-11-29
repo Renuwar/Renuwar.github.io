@@ -5,75 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Scheduling</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 15px;
-        }
-
-        section {
-            margin: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #333;
-            color: #fff;
-        }
-
-        form {
-            margin-top: 20px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        label, input {
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        input[type="submit"] {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 15px;
-            cursor: pointer;
-            border: none;
-            border-radius: 4px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #555;
-        }
+        /* Your CSS styles here */
     </style>
 </head>
 <body>
@@ -84,28 +16,8 @@
 
     <section>
         <h2>Class Schedule</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Monday</th>
-                    <th>Tuesday</th>
-                    <th>Wednesday</th>
-                    <th>Thursday</th>
-                    <th>Friday</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>8:00 AM</td>
-                    <td>Math</td>
-                    <td>Science</td>
-                    <td>English</td>
-                    <td>History</td>
-                    <td>Physical Ed</td>
-                </tr>
-                <!-- Add more rows for other times and classes -->
-            </tbody>
+        <table id="classTable">
+            <!-- Table structure here -->
         </table>
 
         <form id="classForm">
@@ -132,5 +44,54 @@
         </form>
     </section>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Retrieve existing classes from local storage
+            const classes = JSON.parse(localStorage.getItem('classes')) || [];
+
+            // Display existing classes in the table
+            const table = document.getElementById('classTable');
+            classes.forEach(classData => {
+                const row = document.createElement('tr');
+                Object.values(classData).forEach(value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+                table.appendChild(row);
+            });
+
+            // Handle form submission
+            const form = document.getElementById('classForm');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                // Get form data
+                const formData = {};
+                const formElements = form.elements;
+                for (let i = 0; i < formElements.length; i++) {
+                    if (formElements[i].type !== 'submit') {
+                        formData[formElements[i].name] = formElements[i].value;
+                    }
+                }
+
+                // Add new class to the table
+                const newRow = document.createElement('tr');
+                Object.values(formData).forEach(value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    newRow.appendChild(cell);
+                });
+                table.appendChild(newRow);
+
+                // Add new class to local storage
+                classes.push(formData);
+                localStorage.setItem('classes', JSON.stringify(classes));
+
+                // Clear the form
+                form.reset();
+            });
+        });
+    </script>
 </body>
 </html>
