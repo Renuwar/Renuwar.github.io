@@ -203,50 +203,54 @@ button:hover {
 }
 
 /* jadwal section */
-
 .jadwal {
   background-color: var(--bg);
-  display:contents;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px; /* Added padding for better spacing */
 }
 
-label, h2 {
-    margin-bottom: 10px;
-    color: #492675;
+label,
+h2 {
+  margin-bottom: 10px;
+  color: #492675;
 }
 
-select, input[type="text"], input[type="submit"] {
-    width: 100%;
-    padding: 9px;
-    flex: content;
-    box-sizing: border-box;
-    margin-bottom: 14px;
-    border: 0px solid #ced4da;
-    border-radius: 3px;
+select,
+input[type="text"],
+input[type="submit"] {
+  width: 100%;
+  padding: 9px;
+  box-sizing: border-box;
+  margin-bottom: 14px;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
 }
 
 select {
-    background-color: var(--primary);
-    flex:content;
+  background-color: var(--primary);
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    background-color: blue;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background-color: #fff; /* Set background color for the table */
 }
 
-th, td {
-    padding: 14px;
-    text-align: left;
-    border-bottom: 0px solid #dee2e6;
-    flex: content;
+th,
+td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
 }
 
 th {
-    background-color: #342a40;
-    color: #fff;
+  background-color: #342a40;
+  color: #fff;
 }
+
 
 /* footer */
 footer {
