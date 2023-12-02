@@ -233,13 +233,13 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
-    background-color: #5776a5;
+    background-color: #44a7cf;
 }
 
 th, td {
     padding: 14px;
     text-align: left;
-    border-bottom: 0px solid #dee2e6;
+    border-bottom: 0px solid #000000;
     flex: content;
 }
 
