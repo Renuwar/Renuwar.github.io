@@ -161,15 +161,16 @@ body {
 }
 
 .formc .form {
-  flex: 1 1 45rem;
+    flex: 1 1 60%;
+    max-width: 600px;
 }
 
 form {
     width: 99%;
-    max-width: 399px;
+    max-width: 600px;
     margin-top: 19px;
     background-color: #8596da;
-    padding: 19px;
+    padding: 30px;
     border-radius: 7px;
     box-shadow: -1 0 10px rgba(0, 0, 0, 0.1);
 }
